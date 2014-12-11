@@ -41,8 +41,8 @@ print(gh)
 mean <- mean(ds$steps, na.rm=TRUE); print(mean)
 median <- median(ds$steps, na.rm=TRUE); print(median)
 ```
-Mean number of steps taken per day is `r mean`  
-Median number of steps taken per day is `r median`
+Mean number of steps taken per day is 10766  
+Median number of steps taken per day is 10765
 
 ## What is the average daily activity pattern?
 Group the steps by 5 minute interval and calculate the means. Plot this data as a line chart.
@@ -64,10 +64,14 @@ Calculate the interval and time that is the most active (on average):
 most.active.interval <- head(im[order(im$int.avg, decreasing=TRUE),],n=1)
 print(most.active.interval)
 ```
-The 5 minute interval with most steps on average is 08:35-08:40, with `r most.active.interval["int.avg"]` steps on average.
+The 5 minute interval with most steps on average is 08:35-08:40, with 206 steps on average.
 
 ## Imputing missing values
-There are `r sum(is.na(csv$steps))` missing values in the dataset. These will be substituted in a new variable `csv2` with the median value for the relevant interval across all dates in the dataset.
+
+```{r comp.na.obs1}
+print(sum(is.na(csv$steps)))
+```
+There are 2304 missing values in the dataset. These will be substituted in a new variable `csv2` with the median value for the relevant interval across all dates in the dataset.
 
 ```{r impute.missing.values}
 # create copy of original data frame
@@ -89,22 +93,16 @@ ds2.t <- tapply(csv2$steps, csv$date, sum, na.rm=TRUE)
 ds2 <- data.frame(date=as.Date(rownames(ds2.t)), steps=ds2.t, row.names=NULL)
 ```
 
-This new dataset with imputed values can be compared with the original data:
-
-While there are `r sum(is.na(csv$steps))` observations with no values in the original dataset (`csv`)...
-```{r comp.na.obs1}
-print(sum(is.na(csv$steps)))
-```
-...this is now `r sum(is.na(csv2$steps))` in the imputed dataset(`csv2`), as you would expect:
+As you would expect, there are now no values with NA in the imputed dataset:
 ```{r comp.na.obs2}
 print(sum(is.na(csv2$steps)))
 ```
 
-In the daily summary dataset (`ds`), there were `r nrow(ds[ds$steps==0 | is.na(ds$steps),])` days with zero or NA steps taken  ...
+In the daily summary dataset (`ds`), there were 8 days with zero or NA steps taken  ...
 ```{r comp.of.lazy.days1}
 print(nrow(ds[ds$steps==0 | is.na(ds$steps),]))
 ```
-...whereas after imputing the missing values (`ds2`), there are `r nrow(ds2[ds2$steps==0 | is.na(ds2$steps),])` days with zero steps taken:
+...whereas after imputing the missing values (`ds2`), there are no days with zero steps taken:
 ```{r comp.of.lazy.days2}
 print(nrow(ds2[ds2$steps==0 | is.na(ds2$steps),]))
 ```
@@ -137,7 +135,7 @@ What is the impact of imputing missing data on the estimates of the total daily 
 sum2 <- sum(ds2$steps); print(sum2);
 print(sum2 - sum(ds$steps, na.rm=TRUE))
 ```
-The total number of steps in the imputed dataset is `r sum2`, which is `r sum2 - sum(ds$steps, na.rm=TRUE)` greater than in the original dataset.
+The total number of steps in the imputed dataset is 656738, which is 86130 more than in the original dataset.
 
 ``` {r average.steps2}
 # Calculate and print average (mean, median) values, including difference from the original average values as well as % change
@@ -145,9 +143,9 @@ mean2 <- mean(ds2$steps); print(mean2); print(mean2-mean)
 median2 <- median(ds2$steps); print(median2); print(median2 - median)
 
 ```
-Mean number of steps taken per day is `r mean2` when including imputed data, the same as the mean of the original dataset. This will be on account of the missing values being the means themselves.
+Mean number of steps taken per day is 10766 when including imputed data, the same as the mean of the original dataset. This will be on account of the missing values being the means themselves.
 
-Median number of steps taken per day is `r median2` when including imputed data, which is only `r median2 - median` more than the median of the non-imputed dataset.
+Median number of steps taken per day is 10766 when including imputed data, which is only 1.2 more than the median of the non-imputed dataset.
 
 
 ## Are there differences in activity patterns between weekdays and weekends?

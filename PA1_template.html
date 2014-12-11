@@ -95,7 +95,7 @@ mean &lt;- mean(ds$steps, na.rm=TRUE); print(mean)</code></pre>
 <pre><code>## [1] 10766</code></pre>
 <pre class="r"><code>median &lt;- median(ds$steps, na.rm=TRUE); print(median)</code></pre>
 <pre><code>## [1] 10765</code></pre>
-<p>Mean number of steps taken per day is 10766.19<br />Median number of steps taken per day is 10765</p>
+<p>Mean number of steps taken per day is 10766<br />Median number of steps taken per day is 10765</p>
 </div>
 <div id="what-is-the-average-daily-activity-pattern" class="section level2">
 <h2>What is the average daily activity pattern?</h2>
@@ -116,10 +116,12 @@ plot(
 print(most.active.interval)</code></pre>
 <pre><code>##     interval int.avg
 ## 104      835     206</code></pre>
-<p>The 5 minute interval with most steps on average is 08:35-08:40, with 206.17 steps on average.</p>
+<p>The 5 minute interval with most steps on average is 08:35-08:40, with 206 steps on average.</p>
 </div>
 <div id="imputing-missing-values" class="section level2">
 <h2>Imputing missing values</h2>
+<pre class="r"><code>print(sum(is.na(csv$steps)))</code></pre>
+<pre><code>## [1] 2304</code></pre>
 <p>There are 2304 missing values in the dataset. These will be substituted in a new variable <code>csv2</code> with the median value for the relevant interval across all dates in the dataset.</p>
 <pre class="r"><code># create copy of original data frame
 csv2 &lt;- csv
@@ -138,17 +140,13 @@ for (i in 1:nrow(csv2)) {
 # total steps by date and cast into data.frame
 ds2.t &lt;- tapply(csv2$steps, csv$date, sum, na.rm=TRUE)
 ds2 &lt;- data.frame(date=as.Date(rownames(ds2.t)), steps=ds2.t, row.names=NULL)</code></pre>
-<p>This new dataset with imputed values can be compared with the original data:</p>
-<p>While there are 2304 observations with no values in the original dataset (<code>csv</code>)…</p>
-<pre class="r"><code>print(sum(is.na(csv$steps)))</code></pre>
-<pre><code>## [1] 2304</code></pre>
-<p>…this is now 0 in the imputed dataset(<code>csv2</code>), as you would expect:</p>
+<p>As you would expect, there are now no values with NA in the imputed dataset:</p>
 <pre class="r"><code>print(sum(is.na(csv2$steps)))</code></pre>
 <pre><code>## [1] 0</code></pre>
 <p>In the daily summary dataset (<code>ds</code>), there were 8 days with zero or NA steps taken …</p>
 <pre class="r"><code>print(nrow(ds[ds$steps==0 | is.na(ds$steps),]))</code></pre>
 <pre><code>## [1] 8</code></pre>
-<p>…whereas after imputing the missing values (<code>ds2</code>), there are 0 days with zero steps taken:</p>
+<p>…whereas after imputing the missing values (<code>ds2</code>), there are no days with zero steps taken:</p>
 <pre class="r"><code>print(nrow(ds2[ds2$steps==0 | is.na(ds2$steps),]))</code></pre>
 <pre><code>## [1] 0</code></pre>
 <p>The following code shows us that if a given date had <em>any</em> NAs in the original dataset, then it had <em>all</em> NAs for that day i.e. each day’s data was either fully complete or fully missing</p>
@@ -173,7 +171,7 @@ print(gh2)</code></pre>
 <pre><code>## [1] 656738</code></pre>
 <pre class="r"><code>print(sum2 - sum(ds$steps, na.rm=TRUE))</code></pre>
 <pre><code>## [1] 86130</code></pre>
-<p>The total number of steps in the imputed dataset is 656737.51, which is 86129.51 greater than in the original dataset.</p>
+<p>The total number of steps in the imputed dataset is 656738, which is 86130 more than in the original dataset.</p>
 <pre class="r"><code># Calculate and print average (mean, median) values, including difference from the original average values as well as % change
 mean2 &lt;- mean(ds2$steps); print(mean2); print(mean2-mean)</code></pre>
 <pre><code>## [1] 10766</code></pre>
@@ -181,8 +179,8 @@ mean2 &lt;- mean(ds2$steps); print(mean2); print(mean2-mean)</code></pre>
 <pre class="r"><code>median2 &lt;- median(ds2$steps); print(median2); print(median2 - median)</code></pre>
 <pre><code>## [1] 10766</code></pre>
 <pre><code>## [1] 1.2</code></pre>
-<p>Mean number of steps taken per day is 10766.19 when including imputed data, the same as the mean of the original dataset. This will be on account of the missing values being the means themselves.</p>
-<p>Median number of steps taken per day is 10766.19 when including imputed data, which is only 1.19 more than the median of the non-imputed dataset.</p>
+<p>Mean number of steps taken per day is 10766 when including imputed data, the same as the mean of the original dataset. This will be on account of the missing values being the means themselves.</p>
+<p>Median number of steps taken per day is 10766 when including imputed data, which is only 1.2 more than the median of the non-imputed dataset.</p>
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>
