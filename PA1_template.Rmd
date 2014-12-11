@@ -77,7 +77,7 @@ The 5 minute interval with most steps on average is 08:35-08:40, with 206 steps 
 ```{r comp.na.obs1}
 print(sum(is.na(csv$steps)))
 ```
-There are 2304 missing values in the dataset. These will be substituted in a new variable `csv2` with the median value for the relevant interval across all dates in the dataset.
+There are 2304 missing values in the dataset. These will be substituted in a new variable `csv2` with the mean value for the relevant interval across all dates in the dataset.
 
 ```{r impute.missing.values}
 # create copy of original data frame

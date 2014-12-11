@@ -123,7 +123,7 @@ print(sum(is.na(csv$steps)))
 ```
 ## [1] 2304
 ```
-There are 2304 missing values in the dataset. These will be substituted in a new variable `csv2` with the median value for the relevant interval across all dates in the dataset.
+There are 2304 missing values in the dataset. These will be substituted in a new variable `csv2` with the mean value for the relevant interval across all dates in the dataset.
 
 
 ```r
