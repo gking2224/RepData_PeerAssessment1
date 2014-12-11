@@ -12,9 +12,15 @@ options(scipen = 999, digits = 2)
 Unzip the file if necessary and read into variable
 
 ```r
-zip.file <- "activity.zip"
-csv.file <- "activity.csv"
-if (!file.exists(csv.file)) unzip(file_name)
+zip.file <- "data/activity.zip"
+csv.file <- "data/activity.csv"
+if (!file.exists("data")) dir.create("data")
+if (!file.exists(zip.file)) {
+    download.file("https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip",
+                  destfile=zip.file,
+                  method="curl")
+}
+if (!file.exists(csv.file)) unzip(zip.file, exdir="data")
 csv <- read.csv(file=csv.file)
 str(csv)
 ```

@@ -208,9 +208,15 @@ hr {
 
 <p>Unzip the file if necessary and read into variable</p>
 
-<pre><code class="r">zip.file &lt;- &quot;activity.zip&quot;
-csv.file &lt;- &quot;activity.csv&quot;
-if (!file.exists(csv.file)) unzip(file_name)
+<pre><code class="r">zip.file &lt;- &quot;data/activity.zip&quot;
+csv.file &lt;- &quot;data/activity.csv&quot;
+if (!file.exists(&quot;data&quot;)) dir.create(&quot;data&quot;)
+if (!file.exists(zip.file)) {
+    download.file(&quot;https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip&quot;,
+                  destfile=zip.file,
+                  method=&quot;curl&quot;)
+}
+if (!file.exists(csv.file)) unzip(zip.file, exdir=&quot;data&quot;)
 csv &lt;- read.csv(file=csv.file)
 str(csv)
 </code></pre>
